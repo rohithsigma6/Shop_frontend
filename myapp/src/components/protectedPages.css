@@ -1,0 +1,37 @@
+.headerClass{
+    background-color: teal;
+    align-items: center ;
+    display: flex;
+    justify-content: space-between;
+    
+}
+.userName{
+    color: white;
+    float: left;
+    padding-right: 30px;
+    font-size: 30px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.spinner{
+    border: 2px solid green;
+    border-radius: 25px;
+    width:50px;
+    height:50px;
+    border-top:None;
+    border-left:None;
+    animation-name: spin;
+  animation-duration: 50000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function:cubic-bezier(0,1,1,1); 
+
+}
+@keyframes spin {
+    from {
+        transform:rotate(0deg);
+    }
+    to {
+        transform:rotate(360deg);
+    }
+}

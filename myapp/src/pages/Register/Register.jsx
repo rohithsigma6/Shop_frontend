@@ -1,25 +1,41 @@
-import React,{useState} from "react";
-
+import React, { useState,useEffect } from "react";
 import { Link } from "react-router-dom";
+import { RegisterUser } from "../../apiCalls/users";
+import { useNavigate } from "react-router-dom";
 function Register() {
-    const [details,setDetails]=useState({
-        firstName:"",
-        lastName:"",
-        userName:"",
-        email:"",
-        password:""
+    const [details, setDetails] = useState({
+        firstName: "",
+        lastName: "",
+        userName: "",
+        email: "",
+        password: ""
     })
-    const [finalDetails,setFinalDetails]=useState({})
-const handleChange = e=>{
-    e.preventDefault()
-    setDetails({...details,[e.target.name]:e.target.value})
-    console.log(details)
-}
-    const handleSubmit=(e)=>{
+    const navigate = useNavigate()
+    const handleChange = e => {
         e.preventDefault()
-        setFinalDetails(details)
-        console.log(finalDetails)
+        setDetails({ ...details, [e.target.name]: e.target.value })
+        console.log(details)
     }
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        try{
+        const response = await RegisterUser(details)
+        console.log(response)
+        if(response){
+            alert("Registration successfull")
+        }else{
+        
+        alert("error registering")
+        }
+        }catch(err){
+            alert(err)
+        }
+    }
+    useEffect(()=>{
+        if(localStorage.getItem("token")){
+            navigate("/")
+        }
+    },[])
     return (
         <>
             <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
@@ -33,9 +49,8 @@ const handleChange = e=>{
                         CREATE AN ACCOUNT
                     </h2>
                 </div>
-
                 <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                    <form className="space-y-6" action="#" method="POST" onSubmit={e=>handleSubmit(e)}>
+                    <form className="space-y-6" action="#" method="POST" onSubmit={e => handleSubmit(e)}>
                         <div>
                             <label htmlFor="firstName" className="block text-sm font-medium leading-6 text-gray-900">
                                 First Name
@@ -47,13 +62,12 @@ const handleChange = e=>{
                                     type="text"
                                     autoComplete="firstName"
                                     required
-                                    onChange={e=>handleChange(e)}
+                                    onChange={e => handleChange(e)}
                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 />
                             </div>
                         </div>
                         <div>
-
                             <label htmlFor="lastName" className="block text-sm font-medium leading-6 text-gray-900">
                                 last Name
                             </label>
@@ -64,12 +78,11 @@ const handleChange = e=>{
                                     type="text"
                                     autoComplete="lastName"
                                     required
-                                    onChange={e=>handleChange(e)}
+                                    onChange={e => handleChange(e)}
                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 />
                             </div>
                         </div>
-
                         <div>
                             <label htmlFor="userName" className="block text-sm font-medium leading-6 text-gray-900">
                                 User Name
@@ -81,13 +94,11 @@ const handleChange = e=>{
                                     type="text"
                                     autoComplete="userName"
                                     required
-                                    onChange={e=>handleChange(e)}
+                                    onChange={e => handleChange(e)}
                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 />
                             </div>
-
                         </div>
-
                         <div>
                             <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
                                 Email address
@@ -99,12 +110,11 @@ const handleChange = e=>{
                                     type="email"
                                     autoComplete="email"
                                     required
-                                    onChange={e=>handleChange(e)}
+                                    onChange={e => handleChange(e)}
                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 />
                             </div>
                         </div>
-
                         <div>
                             <div className="flex items-center justify-between">
                                 <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
@@ -123,7 +133,7 @@ const handleChange = e=>{
                                     type="password"
                                     autoComplete="current-password"
                                     required
-                                    onChange={e=>handleChange(e)}
+                                    onChange={e => handleChange(e)}
                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 />
                             </div>
@@ -136,7 +146,6 @@ const handleChange = e=>{
                             </button>
                         </div>
                     </form>
-
                     <p className="mt-10 text-center text-sm text-gray-500">
                         Already Registered?{' '}
                         <Link to="/login"> Login</Link>

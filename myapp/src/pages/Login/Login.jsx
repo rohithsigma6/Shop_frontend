@@ -1,27 +1,37 @@
 
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { LoginUser } from "../../apiCalls/users";
 
 function Login() {
+    const navigate = useNavigate()
     const [details, setDetails] = useState({
-
         email: "",
         password: ""
     })
-    const [finalDetails, setFinalDetails] = useState({})
     const handleChange = e => {
         e.preventDefault()
         setDetails({ ...details, [e.target.name]: e.target.value })
-
     }
-    const handleSubmit = (e) => {
+    const handleSubmit =async (e) => {
         e.preventDefault()
-        setFinalDetails(details)
-
+        const response = await LoginUser(details)
+        console.log(response)
+        if(response.success){
+            localStorage.setItem("token",response.token)
+            navigate("/")
+        }
+        else{
+            alert("Invalid user/password")
+        }
     }
+    useEffect(()=>{
+        if(localStorage.getItem("token")){
+            navigate("/")
+        }
+    },[])
     return (
         <>
-
             <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                     <img
@@ -33,7 +43,6 @@ function Login() {
                         Sign in to your account
                     </h2>
                 </div>
-
                 <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                     <form className="space-y-6" action="#" method="POST" onSubmit={e=>handleSubmit(e)}>
                         <div>
@@ -52,7 +61,6 @@ function Login() {
                                 />
                             </div>
                         </div>
-
                         <div>
                             <div className="flex items-center justify-between">
                                 <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
@@ -76,7 +84,6 @@ function Login() {
                                 />
                             </div>
                         </div>
-
                         <div>
                             <button
                                 type="submit"
@@ -86,12 +93,9 @@ function Login() {
                             </button>
                         </div>
                     </form>
-
                     <p className="mt-10 text-center text-sm text-gray-500">
                         Not a member?{' '}
-                       <Link to="/register"> Register</Link>
-                           
-                        
+                       <Link to="/register"> Register</Link>                       
                     </p>
                 </div>
             </div>

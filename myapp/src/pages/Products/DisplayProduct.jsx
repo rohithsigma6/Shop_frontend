@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { axiosInstance } from "../../apiCalls/axiosInstance";
 import axios from "axios";
+import { Textarea } from "@material-tailwind/react";
 const people = [
     {
         name: 'Leslie Alexander',
@@ -131,8 +132,12 @@ function DisplayProduct() {
                         </li>
                     ))}
                 </ul>
-
-
+                <div className="w-96">
+                    <h4>Bid AMount</h4>
+                    <input type="number" name="bidAmount"/>
+                    <h4>comment</h4>
+                    <input type="text" name="comment"/>
+                </div>
             </div>
         </div>
     )
